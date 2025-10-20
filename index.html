@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Game of Life - Project</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div id="app" class="container">
+        <h2>Gra w życie</h2>
+        <p>Life, The game of life) – jeden z pierwszych i najbardziej znanych przykładów automatu
+            komórkowego, wymyślony w roku 1970 przez brytyjskiego matematyka Johna Conwaya.</p>
+        <div>
+            <button @click="changeconf" class="btn btn-info">
+                <span v-show="showconf == 1">Ukryj konfigurację</span>
+                <span v-show="showconf == 0">Pokaż konfigruację</span>
+            </button>
+        </div>
+        <div class=" addb" v-show="showconf">
+            <label>Czas wyświetlania jednego pokolenia : 2 s</label><br />
+
+            <label>Policz Liczbę kroków przed wyświetleniem</label>
+            <input type="number" v-model="duration" class="form" min="1" /><br />
+            <label>Losowanie pokolenia zerowego (0 - 100) </label>
+            <input type="number" v-model="zerosize" class="form" min="1" max="100" /> <br />
+        </div>
+
+        <div class="mt10 w100">
+            <button @click="drawCanva" class="btn btn-info">Twórz nowe pokolenie</button>
+        </div>
+        <div id="canvaDiv">
+            <canvas ref="canvas" id="myCanvas" width="1200" height="1200"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
+
+    <script src="main.js"></script>
+    <script src="script.js"></script>
+    <script src="canva.js"></script>
+
+
+</body>
+
+</html>
