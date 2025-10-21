@@ -13,7 +13,7 @@
 <body>
     <div id="app" class="container">
         <h2>Gra w życie</h2>
-        <p>Life, The game of life) – jeden z pierwszych i najbardziej znanych przykładów automatu
+        <p>Life, The game of life) - jeden z pierwszych i najbardziej znanych przykładów automatu
             komórkowego, wymyślony w roku 1970 przez brytyjskiego matematyka Johna Conwaya.</p>
         <div>
             <button @click="changeconf" class="btn btn-info">
@@ -25,6 +25,10 @@
 
             <label>Szybkość tworzenia następnego pokolenia <b>{{duration * 100}} ms</b></label>
             <input type="number" v-model="duration" class="form form-control" min="1" /> <br />
+
+            <label>Liczba generacji w jednym kroku </label>
+            <input type="number" v-model="numbeOfGenerations" class="form form-control" min="1" max="20" /> <br />
+
             <label>Losowanie pokolenia zerowego - Gęstość (0 - 100) </label>
             <input type="number" v-model="zerosize" class="form form-control" min="1" max="100" /> <br />
 
@@ -49,15 +53,25 @@
 
         </div>
         <div class="mt10 w100 addb">
+            <p>Siatka 3x3 - sąsiedztwo Moore'a (Każda komórka ma ośmiu „sąsiadów”)</p>
             <h4>Tworzenie nowych komórek (Liczba sąsiadów)</h4>
             <label v-for="(c, index) in conf9[0] " :key="index"> {{index}} :
-                <input type="checkbox" class="form " value="1" v-model="conf9[0][index]" />&nbsp;
+                <input type="checkbox" class="form cix" value="1" v-model="conf9[0][index]" />&nbsp;
             </label>
 
             <h4>Pozostaje przy życiu (Liczba sąsiadów)</h4>
-            <label v-for="(c, index) in conf9[1] " :key="index"> {{index}} :
-                <input type="checkbox" class="form " value="1" v-model="conf9[1][index]" />&nbsp;
+            <label v-for="(c, index) in conf9[1] " :key="index">{{index}} :
+                <input type="checkbox" class="form cix" value="1" v-model="conf9[1][index]" />&nbsp;
             </label>
+
+            <h4>Ustaw jedną z najpopularniejszych reguł</h4>
+            <select class="form-control" @change="changePattern()" v-model="selectpattern">
+                <option value="-1">-</option>
+                <option v-for="w in patterns" :value="w.id">{{w.name}}</option>
+            </select><br />
+
+            <input type="button" class="btn btn-info" value="Losuj Regułę" @click="createRule()" />
+
         </div>
 
         <div class="mt10 w100">

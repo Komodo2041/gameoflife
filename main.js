@@ -101,4 +101,17 @@ function calcNeighbor(table, x, y) {
     return res;
 }
 
+function getPattern(id, list) {
+    var res = null;
+    for (const obiekt of list) {
+        if (id == obiekt.id) {
+            res = obiekt;
+        }
+    }
+
+    return res;
+}
+
+
+
 
