@@ -1,16 +1,16 @@
 
 function getzeroshema() {
-    var res = new Array(500).fill(0);
-    for (let i = 0; i < 500; i++) {
-        res[i] = new Array(500).fill(0);
+    var res = new Array(200).fill(0);
+    for (let i = 0; i < 200; i++) {
+        res[i] = new Array(200).fill(0);
     }
     return res;
 }
 
 function drawGeneration0(skala) {
     res = getzeroshema();
-    for (let i = 0; i < 500; i++) {
-        for (let j = 0; j < 500; j++) {
+    for (let i = 0; i < 200; i++) {
+        for (let j = 0; j < 200; j++) {
             res[i][j] = checkskala(skala);
         }
     }
@@ -26,40 +26,79 @@ function checkskala(r) {
     }
 }
 
-function fillCanva(table, choosecolor) {
+function fillCanva(table, choosecolor, choosecolor2, border, borderOld) {
     var c = document.getElementById("myCanvas");
     var ctx = c.getContext("2d");
-    let imageData = ctx.createImageData(1, 1);
-    imageData.data[0] = choosecolor[0]; // Red
-    imageData.data[1] = choosecolor[1]; // Green
-    imageData.data[2] = choosecolor[2]; // Blue
-    imageData.data[3] = 255; // Alpha
 
-    let imageDataWhite = ctx.createImageData(1, 1);
-    imageDataWhite.data[0] = 255; // Red
-    imageDataWhite.data[1] = 255; // Green
-    imageDataWhite.data[2] = 255; // Blue
-    imageDataWhite.data[3] = 255; // Alpha
+    var len = 8;
+    var len2 = 8;
+    if (border) {
+        len--;
+        if (borderOld) {
+            len2--;
+        }
+    }
 
     console.time("mojaPetla");
-
-    for (var i = 0; i < 300; i++) {
-        for (var j = 0; j < 300; j++) {
+    for (var i = 0; i < 200; i++) {
+        for (var j = 0; j < 200; j++) {
             if (table[i][j]) {
-                ctx.fillStyle = 'blue'
-                ctx.fillRect(i * 4, j * 4, i * 4 + 3, j * 4 + 3)
+                ctx.fillStyle = choosecolor;
+                ctx.fillRect(i * 8, j * 8, len, len)
             } else {
-                ctx.fillStyle = 'white';
-                ctx.fillRect(i * 4, j * 4, i * 4 + 3, j * 4 + 3)
+                ctx.fillStyle = choosecolor2;
+                ctx.fillRect(i * 8, j * 8, len2, len2)
             }
 
         }
     }
     console.timeEnd("mojaPetla");
+}
 
+function calcNextstep(table, conf) {
+    console.time("calc");
+    var newTable = getzeroshema();
+    for (let i = 0; i < 200; i++) {
+        for (let j = 0; j < 200; j++) {
+            nr = calcNeighbor(table, i, j);
+
+            if (table[i][j]) {
+                if (conf[1][nr]) {
+                    newTable[i][j] = 1;
+                } else {
+                    newTable[i][j] = 0;
+                }
+            } else {
+                if (conf[0][nr]) {
+                    newTable[i][j] = 1;
+                } else {
+                    newTable[i][j] = 0;
+                }
+            }
+        }
+    }
+    console.timeEnd("calc");
+    return newTable;
+}
+
+function calcNeighbor(table, x, y) {
+    let res = 0;
+
+    for (i = -1; i <= 1; i++) {
+        for (j = -1; j <= 1; j++) {
+            if (x + i >= 0 && y + j >= 0 && x + i < 200 && y + j < 200) {
+                if (table[x + i][y + j]) {
+                    res++;
+                }
+            }
+
+        }
+    }
+
+    if (table[x][y]) {
+        res--;
+    }
+    return res;
 }
 
 
-function x() {
-    alert('sss');
-}

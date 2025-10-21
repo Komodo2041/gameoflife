@@ -6,9 +6,17 @@ const STATES = {
 };
 
 const COLORS = [
-  [0, 255, 255],
-  [255, 0, 255],
-  [255, 255, 0]
+  'red', 'blue', 'green', 'yellow', 'black', 'gray',
+  'pink', 'lightpink', 'hotpink', 'deeppink', 'palevioletred', 'crimson',
+  'navy', 'darkblue', 'mediumblue', 'blue', 'royalblue', 'lightblue',
+  'skyblue', 'lightskyblue', 'dodgerblue', 'cornflowerblue',
+  'lime', 'limegreen', 'springgreen', 'mediumspringgreen', 'green',
+  'forestgreen', 'seagreen', 'darkgreen', 'lightgreen', 'mediumseagreen',
+  'purple', 'darkviolet', 'violet', 'plum', 'indigo', 'mediumpurple',
+  'yellow', 'gold', 'orange', 'darkorange', 'orangered',
+  'brown', 'sienna', 'saddlebrown', 'chocolate',
+  'darkgray', 'gray', 'dimgray', 'lightgray', 'silver', 'darkslategray',
+  'aqua', 'cyan', 'teal', 'olive', 'maroon', 'fuchsia', 'magenta'
 ];
 
 var c = document.getElementById("myCanvas");
@@ -17,12 +25,21 @@ var ctx = c.getContext("2d");
 var shema = getzeroshema();
 
 var data = {
+  canster: 0,
+  generation: 0,
+  duration: 1,
+  step: 0,
+
+  addborderCheck: 0,
+  smallBorder: 0,
+  conf9: [[0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 1, 1, 0, 0, 0, 0, 0]],
   state: STATES.STOPPED,
   colors: COLORS,
-  choosecolor: 2,
-
+  choosecolor: 'silver',
+  choosecolor2: 'white',
   showconf: 1,
-  duration: 20,
+
+
   zerosize: 50,
   schema: shema,
   ctx: ctx,
@@ -43,57 +60,32 @@ new Vue({
       }
     },
     drawCanva: function () {
+      data.canster = 1;
+      data.generation = 0;
       data.schema = drawGeneration0(data.zerosize);
-      fillCanva(data.schema, data.colors[data.choosecolor]);
+      fillCanva(data.schema, data.choosecolor, data.choosecolor2, data.addborderCheck, data.smallBorder);
     },
-
-
 
     start: function () {
       this.state = STATES.STARTED;
       this._tick();
-
-      this.interval = setInterval(this._tick, 50);
-      this.diff = " - ";
+      this.step = 0;
+      this.interval = setInterval(this._tick, 100);
     },
     pause: function () {
       this.state = STATES.PAUSED;
       clearInterval(this.interval);
     },
-    stop: function () {
-      this.state = STATES.STOPPED;
-      clearInterval(this.interval);
-      this.diff = "";
-      this.word1 = "";
-      this.word2 = "";
-      this.step = 0;
-      this.nrword = 1;
-    },
+
     _tick: function () {
-
       this.step++;
-      if (this.step >= this.duration) {
+      if (this.step > this.duration) {
         this.step = 0;
-        if (this.both) {
-          this.nrword++;
-        } else if (this.stepinstep == 1) {
-          this.nrword++;
-        }
-
-        if (this.nrword >= 500) {
-          if (this.repeat) {
-            this.nrword = 0;
-          } else {
-            this.stop();
-            alert("Zakończono");
-            return;
-          }
-        }
-
+        data.generation++;
+        data.schema = calcNextstep(data.schema, data.conf9);
+        fillCanva(data.schema, data.choosecolor, data.choosecolor2, data.addborderCheck, data.smallBorder);
       }
     },
-
-
 
   }
 });

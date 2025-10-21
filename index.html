@@ -22,19 +22,57 @@
             </button>
         </div>
         <div class=" addb" v-show="showconf">
-            <label>Czas wyświetlania jednego pokolenia : 2 s</label><br />
 
-            <label>Policz Liczbę kroków przed wyświetleniem</label>
-            <input type="number" v-model="duration" class="form" min="1" /><br />
-            <label>Losowanie pokolenia zerowego (0 - 100) </label>
-            <input type="number" v-model="zerosize" class="form" min="1" max="100" /> <br />
+            <label>Szybkość tworzenia następnego pokolenia <b>{{duration * 100}} ms</b></label>
+            <input type="number" v-model="duration" class="form form-control" min="1" /> <br />
+            <label>Losowanie pokolenia zerowego - Gęstość (0 - 100) </label>
+            <input type="number" v-model="zerosize" class="form form-control" min="1" max="100" /> <br />
+
+            <label>Wybierz kolor Komórek: </label>
+            <select v-model="choosecolor" class="form-control">
+                <option v-for="c in colors " :value="c">{{c}}</option>
+            </select><br />
+
+            <label>Wybierz kolor Tła: </label>
+            <select v-model="choosecolor2" class="form-control">
+                <option value="white">white</option>
+                <option v-for="c in colors " :value="c">{{c}}</option>
+            </select><br />
+
+            <label>Czy powinna być widoczna granica między komórkami: </label>
+            <input type="checkbox" v-model="addborderCheck" /><br />
+
+            <div v-show="addborderCheck">
+                <label>Pokazuj obramowanie komórek które umarły: </label>
+                <input type="checkbox" v-model="smallBorder" /><br />
+            </div>
+
+        </div>
+        <div class="mt10 w100 addb">
+            <h4>Tworzenie nowych komórek (Liczba sąsiadów)</h4>
+            <label v-for="(c, index) in conf9[0] " :key="index"> {{index}} :
+                <input type="checkbox" class="form " value="1" v-model="conf9[0][index]" />&nbsp;
+            </label>
+
+            <h4>Pozostaje przy życiu (Liczba sąsiadów)</h4>
+            <label v-for="(c, index) in conf9[1] " :key="index"> {{index}} :
+                <input type="checkbox" class="form " value="1" v-model="conf9[1][index]" />&nbsp;
+            </label>
         </div>
 
         <div class="mt10 w100">
             <button @click="drawCanva" class="btn btn-info">Twórz nowe pokolenie</button>
+            <button :disabled="state==='started'" title="start" @click="start()" v-show="canster">
+                <i class="glyphicon glyphicon-play"></i>
+            </button>
+            <button :disabled="state!=='started'" title="pause" @click="pause()" v-show="canster">
+                <i class="glyphicon glyphicon-pause"></i>
+            </button>
+
         </div>
+        <p v-show="canster"> Generacja: {{generation}}</p>
         <div id="canvaDiv">
-            <canvas ref="canvas" id="myCanvas" width="1200" height="1200"></canvas>
+            <canvas ref="canvas" id="myCanvas" width="1600" height="1600"></canvas>
         </div>
     </div>
 
@@ -42,8 +80,6 @@
 
     <script src="main.js"></script>
     <script src="script.js"></script>
-    <script src="canva.js"></script>
-
 
 </body>
 
