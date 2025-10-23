@@ -61,6 +61,24 @@ var patterns = [
   { 'id': 34, 'name': "Diameba", "reg": [[0, 0, 0, 1, 0, 1, 1, 1, 1], [0, 0, 0, 0, 0, 1, 1, 1, 1]] },
 ];
 
+var galerry = [
+  { 'thumb': 'galeria/thumb1.jpg', 'image': 'galeria/one.jpg' },
+  { 'thumb': 'galeria/thumb2.jpg', 'image': 'galeria/two.jpg' },
+  { 'thumb': 'galeria/thumb3.jpg', 'image': 'galeria/thre.jpg' },
+  { 'thumb': 'galeria/thumb4.jpg', 'image': 'galeria/four.jpg' },
+  { 'thumb': 'galeria/thumb5.jpg', 'image': 'galeria/five.jpg' },
+  { 'thumb': 'galeria/thumb6.jpg', 'image': 'galeria/six.jpg' },
+  { 'thumb': 'galeria/thumb7.jpg', 'image': 'galeria/seven.jpg' }
+];
+
+var trybs = [
+  { 'id': 1, 'img': 'galeria/tryb1.jpg', 'name': '3x3', fields: 9 },
+  { 'id': 2, 'img': 'galeria/tryb2.jpg', 'name': 'Tryb A', fields: 24 },
+  { 'id': 3, 'img': 'galeria/tryb3.jpg', 'name': 'Tryb B', fields: 12 },
+  { 'id': 4, 'img': 'galeria/tryb4.jpg', 'name': 'Tryb C', fields: 16 },
+  { 'id': 5, 'img': 'galeria/tryb5.jpg', 'name': 'Tryb D', fields: 20 },
+];
+
 var data = {
   canster: 0,
   generation: 0,
@@ -69,60 +87,93 @@ var data = {
   step: 0,
   patterns: patterns,
   addborderCheck: 0,
-  smallBorder: 0,
   conf9: [[0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 1, 1, 0, 0, 0, 0, 0]],
   state: STATES.STOPPED,
   colors: COLORS,
-  choosecolor: 'silver',
-  choosecolor2: 'white',
-  showconf: 1,
+  choosecolors: ['blue', 'white', 'red'],
+  showconfig: [0, 1, 0],
   zerosize: 50,
   schema: shema,
   ctx: ctx,
-  selectpattern: -1
-
+  selectpattern: -1,
+  options: [0, 0, 0, 0, 0],
+  images: galerry,
+  selectedImage: galerry[0].image,
+  tryb: 1,
+  trybs: trybs,
+  conf16: [[0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+  showfields: 24
 };
 
 
 new Vue({
   el: '#app',
   data: data,
+
   methods: {
-    changeconf: function () {
-      if (data.showconf) {
-        data.showconf = 0;
+    changeconf: function (nr) {
+      if (data.showconfig[nr]) {
+        data.showconfig[nr] = 0;
       } else {
-        data.showconf = 1
+        data.showconfig[nr] = 1;
       }
+      if (nr == 2 && data.showconfig[2] == 0) {
+        data.tryb = 1;
+      }
+      this.$forceUpdate();
     },
     drawCanva: function () {
       data.canster = 1;
       data.generation = 0;
       data.schema = drawGeneration0(data.zerosize);
-      fillCanva(data.schema, data.choosecolor, data.choosecolor2, data.addborderCheck, data.smallBorder);
+      fillCanva(data.schema, data.choosecolors, data.addborderCheck, data.options);
     },
     changePattern: function () {
       sel = data.selectpattern;
       pattern = getPattern(sel, data.patterns);
       if (pattern) {
-        data.conf9[0] = pattern.reg[0];
-        data.conf9[1] = pattern.reg[1];
+        data.conf9[0] = pattern.reg[0].slice();
+        data.conf9[1] = pattern.reg[1].slice();
       }
     },
     createRule: function () {
       data.selectpattern = -1;
       for (i = 0; i < 2; i++) {
         for (j = 0; j < 9; j++) {
-          data.conf9[i][j] = Boolean(checkskala(50));
+          data.conf9[i][j] = checkskala(50);
         }
       }
-
+      this.$forceUpdate();
+    },
+    createRule16: function () {
+      for (i = 0; i < 2; i++) {
+        for (j = 0; j < 24; j++) {
+          data.conf16[i][j] = checkskala(50);
+        }
+      }
+      this.$forceUpdate();
+    },
+    refresh: function () {
+      this.$forceUpdate();
+    },
+    changeFoto: function (i) {
+      data.selectedImage = data.images[i].image;
+    },
+    changeTryb: function (j) {
+      if (j == 1) {
+        data.showconfig[2] = 0;
+        return true;
+      }
+      this.pause();
+      tryb = getPattern(j, data.trybs);
+      data.showfields = tryb.fields;
     },
     start: function () {
       this.state = STATES.STARTED;
       this._tick();
       this.step = 0;
-      this.interval = setInterval(this._tick, 100);
+      this.interval = setInterval(this._tick, 200);
     },
     pause: function () {
       this.state = STATES.PAUSED;
@@ -135,10 +186,14 @@ new Vue({
         this.step = 0;
         for (let i = 0; i < data.numbeOfGenerations; i++) {
           data.generation++;
-          data.schema = calcNextstep(data.schema, data.conf9);
+          if (data.tryb == 1) {
+            data.schema = calcNextstep(data.schema, data.conf9, data.tryb);
+          } else {
+            data.schema = calcNextstep(data.schema, data.conf16, data.tryb);
+          }
 
         }
-        fillCanva(data.schema, data.choosecolor, data.choosecolor2, data.addborderCheck, data.smallBorder);
+        fillCanva(data.schema, data.choosecolors, data.addborderCheck, data.options);
       }
     },
 

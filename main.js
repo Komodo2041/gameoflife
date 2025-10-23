@@ -1,4 +1,5 @@
 
+
 function getzeroshema() {
     var res = new Array(200).fill(0);
     for (let i = 0; i < 200; i++) {
@@ -26,28 +27,69 @@ function checkskala(r) {
     }
 }
 
-function fillCanva(table, choosecolor, choosecolor2, border, borderOld) {
+function getMaxRandom(max) {
+    var n = Math.floor(Math.random() * (max + 1));
+    return n;
+}
+
+function fillCanva(table, choosecolors, border, options) {
     var c = document.getElementById("myCanvas");
     var ctx = c.getContext("2d");
+
+    var moveX = 0;
+    var moveY = 0;
+    var move2X = 0;
+    var move2Y = 0;
 
     var len = 8;
     var len2 = 8;
     if (border) {
         len--;
-        if (borderOld) {
-            len2--;
+        if (options[0]) {
+            len--;
+            moveX = 1;
+            moveY = 1;
+        }
+        if (options[1]) {
+            len2 = 6;
+            move2X = 1;
+            move2Y = 1;
         }
     }
 
     console.time("mojaPetla");
     for (var i = 0; i < 200; i++) {
         for (var j = 0; j < 200; j++) {
+            if (border && options[0] && options[3]) {
+                moveX = getMaxRandom(options[3]);
+                moveY = getMaxRandom(options[3]);
+                len = 8 - options[3];
+            }
+            if (border && options[1] && options[2]) {
+                move2X = getMaxRandom(2);
+                move2Y = getMaxRandom(2);
+            }
+
             if (table[i][j]) {
-                ctx.fillStyle = choosecolor;
-                ctx.fillRect(i * 8, j * 8, len, len)
+                if (options[0]) {
+                    ctx.fillStyle = choosecolors[2];
+                    ctx.fillRect(i * 8, j * 8, 8, 8);
+                }
+                ctx.fillStyle = choosecolors[0];
+                ctx.fillRect(i * 8 + moveX, j * 8 + moveY, len, len);
+                if (options[5]) {
+                    moveX = getMaxRandom(options[3]);
+                    moveY = getMaxRandom(options[3]);
+                    ctx.fillRect(i * 8 + moveX, j * 8 + moveY, len, len);
+                }
+
             } else {
-                ctx.fillStyle = choosecolor2;
-                ctx.fillRect(i * 8, j * 8, len2, len2)
+                if (border && options[1]) {
+                    ctx.fillStyle = choosecolors[2];
+                    ctx.fillRect(i * 8, j * 8, 8, 8);
+                }
+                ctx.fillStyle = choosecolors[1];
+                ctx.fillRect(i * 8 + move2X, j * 8 + move2Y, len2, len2)
             }
 
         }
@@ -55,13 +97,16 @@ function fillCanva(table, choosecolor, choosecolor2, border, borderOld) {
     console.timeEnd("mojaPetla");
 }
 
-function calcNextstep(table, conf) {
+function calcNextstep(table, conf, tryb) {
     console.time("calc");
     var newTable = getzeroshema();
     for (let i = 0; i < 200; i++) {
         for (let j = 0; j < 200; j++) {
-            nr = calcNeighbor(table, i, j);
-
+            if (tryb == 1) {
+                nr = calcNeighbor(table, i, j);
+            } else {
+                nr = calcNeighbor25(table, i, j, tryb);
+            }
             if (table[i][j]) {
                 if (conf[1][nr]) {
                     newTable[i][j] = 1;
@@ -91,7 +136,6 @@ function calcNeighbor(table, x, y) {
                     res++;
                 }
             }
-
         }
     }
 
@@ -109,6 +153,73 @@ function getPattern(id, list) {
         }
     }
 
+    return res;
+}
+
+function calcNeighbor25(table, x, y, tryb) {
+
+    var modeTable = getModeGridTryb(tryb);
+    let res = 0;
+
+    for (i = -2; i <= 2; i++) {
+        for (j = -2; j <= 2; j++) {
+            if (x + i >= 0 && y + j >= 0 && x + i < 200 && y + j < 200) {
+                if (modeTable[i + 2][j + 2] && table[x + i][y + j]) {
+                    res++;
+                }
+            }
+        }
+    }
+
+    return res;
+
+
+}
+
+function getModeGridTryb(tryb) {
+    var res = [];
+    const modegrid2 = [
+        [1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1],
+        [1, 1, 0, 1, 1],
+        [1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1],
+    ];
+    const modegrid3 = [
+        [1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1],
+        [1, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1],
+    ];
+    const modegrid4 = [
+        [0, 1, 0, 1, 0],
+        [1, 1, 0, 1, 1],
+        [0, 0, 0, 0, 0],
+        [1, 1, 0, 1, 1],
+        [0, 1, 0, 1, 0],
+    ];
+    const modegrid5 = [
+        [0, 1, 1, 1, 0],
+        [1, 0, 1, 0, 1],
+        [1, 1, 0, 1, 1],
+        [1, 0, 1, 0, 1],
+        [0, 1, 1, 1, 0],
+    ];
+    switch (tryb) {
+        case 2:
+            res = modegrid2;
+            break;
+        case 3:
+            res = modegrid3;
+            break;
+        case 4:
+            res = modegrid4;
+            break;
+        case 5:
+            res = modegrid5;
+            break;
+    }
     return res;
 }
 

@@ -30,3 +30,38 @@
             margin-right: 5px !important;
             margin-top: 2px !important;
         }
+
+        .radiobox {
+            display: inline-block;
+
+        }
+
+        .imagebox img {
+            cursor: pointer;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+
+        .imagebox img:hover {
+            opacity: 0.8;
+        }
+
+        .tb {
+            margin: 50px;
+        }
+
+        .tb td {
+            width: 20px;
+            height: 20px;
+            background: silver;
+            border: solid 1px #1c1c1c;
+            text-align: center;
+        }
+
+        .tb td.wh {
+            background: white;
+        }
+
+        #ss {
+            margin-top: 20px;
+        }

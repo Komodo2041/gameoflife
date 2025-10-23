@@ -11,17 +11,36 @@
 </head>
 
 <body>
+
     <div id="app" class="container">
         <h2>Gra w życie</h2>
         <p>Life, The game of life) - jeden z pierwszych i najbardziej znanych przykładów automatu
             komórkowego, wymyślony w roku 1970 przez brytyjskiego matematyka Johna Conwaya.</p>
+
         <div>
-            <button @click="changeconf" class="btn btn-info">
-                <span v-show="showconf == 1">Ukryj konfigurację</span>
-                <span v-show="showconf == 0">Pokaż konfigruację</span>
+            <button @click="changeconf(1)" class="btn btn-info">
+                <span v-show="showconfig[1]==1">Ukryj Galerię</span>
+                <span v-show="showconfig[1]==0">Pokaż Galerię</span>
+            </button><br />
+        </div>
+        <div class="mt10 w100" v-show="showconfig[1]">
+            <p>Mini galeria prezentująca efekty symulacji</p>
+            <div class="head">
+                <img :src="selectedImage" alt="foto-big" />
+            </div>
+            <div class="imagebox">
+                <img v-for="(img, index) in  images" :src="img.thumb" alt="foto" @click="changeFoto(index)" />
+            </div>
+        </div>
+        <div class="mt10 w100" v-show="showconfig[1]==0"></div>
+
+        <div>
+            <button @click="changeconf(0)" class="btn btn-info">
+                <span v-show="showconfig[0] == 1">Ukryj konfigurację</span>
+                <span v-show="showconfig[0] == 0">Pokaż konfigruację</span>
             </button>
         </div>
-        <div class=" addb" v-show="showconf">
+        <div class=" addb" v-show="showconfig[0]">
 
             <label>Szybkość tworzenia następnego pokolenia <b>{{duration * 100}} ms</b></label>
             <input type="number" v-model="duration" class="form form-control" min="1" /> <br />
@@ -33,12 +52,18 @@
             <input type="number" v-model="zerosize" class="form form-control" min="1" max="100" /> <br />
 
             <label>Wybierz kolor Komórek: </label>
-            <select v-model="choosecolor" class="form-control">
+            <select v-model="choosecolors[0]" class="form-control">
                 <option v-for="c in colors " :value="c">{{c}}</option>
             </select><br />
 
             <label>Wybierz kolor Tła: </label>
-            <select v-model="choosecolor2" class="form-control">
+            <select v-model="choosecolors[1]" class="form-control">
+                <option value="white">white</option>
+                <option v-for="c in colors " :value="c">{{c}}</option>
+            </select><br />
+
+            <label>Wybierz kolor Pomocniczy (Uzywany w różnych konfiguracjach): </label>
+            <select v-model="choosecolors[2]" class="form-control">
                 <option value="white">white</option>
                 <option v-for="c in colors " :value="c">{{c}}</option>
             </select><br />
@@ -47,12 +72,32 @@
             <input type="checkbox" v-model="addborderCheck" /><br />
 
             <div v-show="addborderCheck">
-                <label>Pokazuj obramowanie komórek które umarły: </label>
-                <input type="checkbox" v-model="smallBorder" /><br />
+                <label>Użyj koloru pomocniczego do oznaczenia granic żywych komórek: </label>
+                <input type="checkbox" v-model="options[0]" @change="refresh()" /><br />
+                <label>Użyj koloru pomocniczego do oznaczenia granic martwych komórek: </label>
+                <input type="checkbox" v-model="options[1]" @change="refresh()" /><br />
+                <div v-show="options[0]">
+                    <label> Skala zmian w wyglądzie żywych komórek: </label>
+                    <div class="radiobox" v-for="option in [0,2,3,4,5,6]" @change="refresh()">
+
+                        <label :for="option">{{ option }}
+                            <input type="radio" v-model="options[3]" :value="option" :id="option">
+                        </label>&nbsp;
+                    </div>
+                    <div v-show="options[3]">
+                        <label>Podwój wnętrze komórki: </label>
+                        <input type="checkbox" v-model="options[5]" /><br />
+                    </div>
+                </div>
+                <div v-show="options[1]">
+                    <label>Losowość wyglądu martwych komórek: </label>
+                    <input type="checkbox" v-model="options[2]" /><br />
+                </div>
+
             </div>
 
         </div>
-        <div class="mt10 w100 addb">
+        <div class="mt10 w100 addb" v-show="tryb == 1">
             <p>Siatka 3x3 - sąsiedztwo Moore'a (Każda komórka ma ośmiu „sąsiadów”)</p>
             <h4>Tworzenie nowych komórek (Liczba sąsiadów)</h4>
             <label v-for="(c, index) in conf9[0] " :key="index"> {{index}} :
@@ -74,8 +119,39 @@
 
         </div>
 
+        <div class="mt10 w100 addb">
+            <button @click="changeconf(2)" class="btn btn-info">
+                <span v-show="showconfig[2] == 1">Ukryj inne tryby sąsiedztwa</span>
+                <span v-show="showconfig[2] == 0">Pokaż inne tryby sąsiedztwa</span>
+            </button>
+            <div v-show="showconfig[2]">
+                <div class="radiobox" v-for="t in trybs">
+                    <label>
+                        <input type="radio" v-model="tryb" :value="t.id" @change="changeTryb(t.id)">
+                        {{t.name}}
+                        <img :src="t.img" alt="trybfoto" />
+                    </label>&nbsp;
+                </div>
+                <div v-show="tryb != 1">
+                    <h4>Tworzenie nowych komórek (Liczba sąsiadów) </h4>
+                    <label v-for="(c, index) in conf16[0] " :key="index" v-show="index <= showfields"> {{index}}
+                        :
+                        <input type="checkbox" class="form cix" value="1" v-model="conf16[0][index]" />&nbsp;
+                    </label>
+
+                    <h4>Pozostaje przy życiu (Liczba sąsiadów)</h4>
+                    <label v-for="(c, index) in conf16[1] " :key="index" v-show="index <= showfields">{{index}} :
+                        <input type="checkbox" class="form cix" value="1" v-model="conf16[1][index]" />&nbsp;
+                    </label>
+                    <br />
+                    <input type="button" class="btn btn-info" value="Losuj Regułę" @click="createRule16()" />
+                </div>
+            </div>
+        </div>
+
         <div class="mt10 w100">
-            <button @click="drawCanva" class="btn btn-info">Twórz nowe pokolenie</button>
+            <h2>Symulacja</h2>
+            <button @click="drawCanva" class="btn btn-primary">Twórz nowe pokolenie</button>
             <button :disabled="state==='started'" title="start" @click="start()" v-show="canster">
                 <i class="glyphicon glyphicon-play"></i>
             </button>
