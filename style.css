@@ -65,3 +65,19 @@
         #ss {
             margin-top: 20px;
         }
+
+        #gen0 {
+            margin: 15px 0px;
+        }
+
+        #gen0 td {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border: solid 1px #1c1c1c;
+            cursor: pointer;
+        }
+
+        #gen0 td.sil {
+            background: black;
+        }

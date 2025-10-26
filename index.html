@@ -110,7 +110,7 @@
             </label>
 
             <h4>Ustaw jedną z najpopularniejszych reguł</h4>
-            <select class="form-control" @change="changePattern()" v-model="selectpattern">
+            <select class="form-control" @change="changePattern(1)" v-model="selectpattern">
                 <option value="-1">-</option>
                 <option v-for="w in patterns" :value="w.id">{{w.name}}</option>
             </select><br />
@@ -145,6 +145,13 @@
                     </label>
                     <br />
                     <input type="button" class="btn btn-info" value="Losuj Regułę" @click="createRule16()" />
+
+                    <h4>Ustaw jedną z najpopularniejszych reguł</h4>
+                    <select class="form-control" @change="changePattern(2)" v-model="selectpattern2">
+                        <option value="-1">-</option>
+                        <option v-for="w in patterns" :value="w.id">{{w.name}}</option>
+                    </select><br />
+
                 </div>
             </div>
         </div>
@@ -152,15 +159,41 @@
         <div class="mt10 w100">
             <h2>Symulacja</h2>
             <button @click="drawCanva" class="btn btn-primary">Twórz nowe pokolenie</button>
+            <button @click="oneStep" class="btn btn-primary" v-show="canster">Jeden Krok</button>
+
             <button :disabled="state==='started'" title="start" @click="start()" v-show="canster">
                 <i class="glyphicon glyphicon-play"></i>
             </button>
             <button :disabled="state!=='started'" title="pause" @click="pause()" v-show="canster">
                 <i class="glyphicon glyphicon-pause"></i>
             </button>
+            <br /><br />
+            <button @click="changeconf(3)" class="btn btn-info">
+                <span v-show="showconfig[3] == 0">Stwórz własnę generacją początkową</span>
+                <span v-show="showconfig[3] == 1">Ukryj tworzenie generacji początkowej</span>
+            </button>
+            <button @click="setGen0" v-show="showconfig[3] == 1" class="btn btn-info">
+                Wstaw komórki
+            </button>
 
         </div>
         <p v-show="canster"> Generacja: {{generation}}</p>
+
+        <div v-show="showconfig[3]">
+            <table id="gen0">
+                <tr v-for="row in 50" :key="'row-' + row">
+                    <td v-for="col in 50" :key="'col-' + col" v-bind:class="{ sil: gen0[row-1][col-1] }"
+                        @click="changegen0(row,col)">
+
+                    </td>
+                </tr>
+            </table>
+            <button @click="setGen0" v-show="showconfig[3] == 1" class="btn btn-info mt10">
+                Wstaw komórki
+            </button>
+            <br />
+        </div>
+
         <div id="canvaDiv">
             <canvas ref="canvas" id="myCanvas" width="1600" height="1600"></canvas>
         </div>

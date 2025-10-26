@@ -22,6 +22,7 @@ const COLORS = [
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 var shema = getzeroshema();
+var gen0 = getgen0();
 
 var patterns = [
   { 'id': 0, 'name': "Seeds", "reg": [[0, 0, 1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]] },
@@ -62,21 +63,31 @@ var patterns = [
 ];
 
 var galerry = [
-  { 'thumb': 'galeria/thumb1.jpg', 'image': 'galeria/one.jpg' },
-  { 'thumb': 'galeria/thumb2.jpg', 'image': 'galeria/two.jpg' },
-  { 'thumb': 'galeria/thumb3.jpg', 'image': 'galeria/thre.jpg' },
-  { 'thumb': 'galeria/thumb4.jpg', 'image': 'galeria/four.jpg' },
-  { 'thumb': 'galeria/thumb5.jpg', 'image': 'galeria/five.jpg' },
-  { 'thumb': 'galeria/thumb6.jpg', 'image': 'galeria/six.jpg' },
-  { 'thumb': 'galeria/thumb7.jpg', 'image': 'galeria/seven.jpg' }
+  { 'thumb': 'galeria/thumb1.jpg', 'image': 'galeria/one.JPG' },
+  { 'thumb': 'galeria/thumb2.jpg', 'image': 'galeria/two.JPG' },
+  { 'thumb': 'galeria/thumb3.jpg', 'image': 'galeria/thre.JPG' },
+  { 'thumb': 'galeria/thumb4.jpg', 'image': 'galeria/four.JPG' },
+  { 'thumb': 'galeria/thumb5.jpg', 'image': 'galeria/five.JPG' },
+  { 'thumb': 'galeria/thumb6.jpg', 'image': 'galeria/six.JPG' },
+  { 'thumb': 'galeria/thumb7.jpg', 'image': 'galeria/seven.JPG' }
 ];
 
 var trybs = [
-  { 'id': 1, 'img': 'galeria/tryb1.jpg', 'name': '3x3', fields: 9 },
-  { 'id': 2, 'img': 'galeria/tryb2.jpg', 'name': 'Tryb A', fields: 24 },
-  { 'id': 3, 'img': 'galeria/tryb3.jpg', 'name': 'Tryb B', fields: 12 },
-  { 'id': 4, 'img': 'galeria/tryb4.jpg', 'name': 'Tryb C', fields: 16 },
-  { 'id': 5, 'img': 'galeria/tryb5.jpg', 'name': 'Tryb D', fields: 20 },
+  { 'id': 1, 'img': 'galeria/tryb1.JPG', 'name': '3x3', fields: 9 },
+  { 'id': 2, 'img': 'galeria/tryb2.JPG', 'name': 'Tryb A', fields: 24 },
+  { 'id': 3, 'img': 'galeria/tryb3.JPG', 'name': 'Tryb B', fields: 12 },
+  { 'id': 4, 'img': 'galeria/tryb4.JPG', 'name': 'Tryb C', fields: 16 },
+  { 'id': 5, 'img': 'galeria/tryb5.JPG', 'name': 'Tryb D', fields: 20 },
+  { 'id': 6, 'img': 'galeria/tryb6.JPG', 'name': '{ref 3x3} - 8 - Pond', fields: 8 },
+  { 'id': 7, 'img': 'galeria/tryb7.JPG', 'name': '{ref 3x3} - 8 - Cross', fields: 8 },
+  { 'id': 8, 'img': 'galeria/tryb8.JPG', 'name': '{ref 3x3} - 8 - Windmill', fields: 8 },
+  { 'id': 9, 'img': 'galeria/tryb9.JPG', 'name': '{ref 3x3} - 8 - Diagonal', fields: 8 },
+  { 'id': 10, 'img': 'galeria/tryb10.JPG', 'name': '{ref 3x3} - 8 - Romb', fields: 8 },
+  { 'id': 11, 'img': 'galeria/tryb11.JPG', 'name': '{ref 3x3} - 8 - Big squere', fields: 8 },
+  { 'id': 12, 'img': 'galeria/tryb12.JPG', 'name': '{ref 3x3} - 8 - Narty', fields: 8 },
+  { 'id': 13, 'img': 'galeria/tryb13.JPG', 'name': '{ref 3x3} - 8 - Romb in Squere', fields: 8 },
+  { 'id': 14, 'img': 'galeria/tryb14.JPG', 'name': '{ref 3x3} - 8 - Wave', fields: 8 },
+
 ];
 
 var data = {
@@ -91,11 +102,12 @@ var data = {
   state: STATES.STOPPED,
   colors: COLORS,
   choosecolors: ['blue', 'white', 'red'],
-  showconfig: [0, 1, 0],
+  showconfig: [0, 1, 0, 0],
   zerosize: 50,
   schema: shema,
   ctx: ctx,
   selectpattern: -1,
+  selectpattern2: -1,
   options: [0, 0, 0, 0, 0],
   images: galerry,
   selectedImage: galerry[0].image,
@@ -103,7 +115,8 @@ var data = {
   trybs: trybs,
   conf16: [[0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
-  showfields: 24
+  showfields: 24,
+  gen0: gen0,
 };
 
 
@@ -129,13 +142,31 @@ new Vue({
       data.schema = drawGeneration0(data.zerosize);
       fillCanva(data.schema, data.choosecolors, data.addborderCheck, data.options);
     },
-    changePattern: function () {
-      sel = data.selectpattern;
+    changePattern: function (nr) {
+      if (nr == 1) {
+        sel = data.selectpattern;
+      } else {
+        sel = data.selectpattern2;
+      }
       pattern = getPattern(sel, data.patterns);
       if (pattern) {
-        data.conf9[0] = pattern.reg[0].slice();
-        data.conf9[1] = pattern.reg[1].slice();
+        if (nr == 1) {
+          data.conf9[0] = pattern.reg[0].slice();
+          data.conf9[1] = pattern.reg[1].slice();
+        }
+        if (nr == 2) {
+          data.conf16[0].fill(0);
+          data.conf16[1].fill(0);
+          var pom = pattern.reg[0].slice();
+          var pom2 = pattern.reg[1].slice();
+          for (i = 0; i <= 8; i++) {
+            data.conf16[0][i] = pom[i];
+            data.conf16[1][i] = pom2[i];
+          }
+
+        }
       }
+      this.$forceUpdate();
     },
     createRule: function () {
       data.selectpattern = -1;
@@ -168,6 +199,38 @@ new Vue({
       this.pause();
       tryb = getPattern(j, data.trybs);
       data.showfields = tryb.fields;
+    },
+    oneStep: function () {
+      data.generation++;
+      if (data.tryb == 1) {
+        data.schema = calcNextstep(data.schema, data.conf9, data.tryb);
+      } else {
+        data.schema = calcNextstep(data.schema, data.conf16, data.tryb);
+      }
+      fillCanva(data.schema, data.choosecolors, data.addborderCheck, data.options);
+    },
+    changegen0: function (x, y) {
+      x--;
+      y--;
+      if (data.gen0[x][y]) {
+        data.gen0[x][y] = 0;
+      } else {
+        data.gen0[x][y] = 1;
+      }
+      this.$forceUpdate();
+    },
+    setGen0: function () {
+      data.schema = getzeroshema();
+      for (i = 0; i < 50; i++) {
+        for (j = 0; j < 50; j++) {
+          data.schema[i + 75][j + 75] = data.gen0[j][i];
+        }
+      }
+      data.canster = 1;
+      data.generation = 0;
+      data.showconfig[3] = 0;
+      fillCanva(data.schema, data.choosecolors, data.addborderCheck, data.options);
+      this.$forceUpdate();
     },
     start: function () {
       this.state = STATES.STARTED;
