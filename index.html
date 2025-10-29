@@ -96,6 +96,12 @@
 
             </div>
 
+            <label>Pokazywanie komórek które dopiero umarły (Ramka z kolorem pomocnicznym): </label>
+            <input type="checkbox" v-model="options[6]" v-bind:disabled="options[7] == true" />
+            <br />
+            <label>Pokazywanie komórek które dopiero umarły (Cała komórkam ma kolor pomocniczy): </label>
+            <input type="checkbox" @change="unsetprevoption()" v-model="options[7]" /><br />
+
         </div>
         <div class="mt10 w100 addb" v-show="tryb == 1">
             <p>Siatka 3x3 - sąsiedztwo Moore'a (Każda komórka ma ośmiu „sąsiadów”)</p>
@@ -158,8 +164,8 @@
 
         <div class="mt10 w100">
             <h2>Symulacja</h2>
-            <button @click="drawCanva" class="btn btn-primary">Twórz nowe pokolenie</button>
-            <button @click="oneStep" class="btn btn-primary" v-show="canster">Jeden Krok</button>
+            <button @click="drawCanva" class="btn btn-success">Twórz nowe pokolenie</button>
+            <button @click="oneStep" class="btn btn-info" v-show="canster">Jeden Krok</button>
 
             <button :disabled="state==='started'" title="start" @click="start()" v-show="canster">
                 <i class="glyphicon glyphicon-play"></i>
@@ -175,11 +181,13 @@
             <button @click="setGen0" v-show="showconfig[3] == 1" class="btn btn-info">
                 Wstaw komórki
             </button>
-
+            <button @click="setZeroGen0" v-show="showconfig[3] == 1" class="btn btn-info">
+                Zeruj komórki
+            </button>
         </div>
-        <p v-show="canster"> Generacja: {{generation}}</p>
+        <p v-show="canster"> Generacja: {{generation}} <span v-show="state=='paused'"><b> {{state}}</b> </span></p>
 
-        <div v-show="showconfig[3]">
+        <div v-show=" showconfig[3]">
             <table id="gen0">
                 <tr v-for="row in 50" :key="'row-' + row">
                     <td v-for="col in 50" :key="'col-' + col" v-bind:class="{ sil: gen0[row-1][col-1] }"

@@ -65,7 +65,7 @@ function fillCanva(table, choosecolors, border, options) {
         }
     }
 
-    console.time("mojaPetla");
+    //console.time("mojaPetla");
     for (var i = 0; i < 200; i++) {
         for (var j = 0; j < 200; j++) {
             if (border && options[0] && options[3]) {
@@ -78,19 +78,28 @@ function fillCanva(table, choosecolors, border, options) {
                 move2Y = getMaxRandom(2);
             }
 
-            if (table[i][j]) {
-                if (options[0]) {
+            if (table[i][j] > 0) {
+
+                if (border && options[0]) {
                     ctx.fillStyle = choosecolors[2];
                     ctx.fillRect(i * 8, j * 8, 8, 8);
                 }
                 ctx.fillStyle = choosecolors[0];
                 ctx.fillRect(i * 8 + moveX, j * 8 + moveY, len, len);
-                if (options[5]) {
+                if (border && options[5]) {
                     moveX = getMaxRandom(options[3]);
                     moveY = getMaxRandom(options[3]);
                     ctx.fillRect(i * 8 + moveX, j * 8 + moveY, len, len);
                 }
 
+            } else if (table[i][j] === -1 && (options[6] == 1 || options[7] == 1)) {
+
+                ctx.fillStyle = choosecolors[2];
+                ctx.fillRect(i * 8, j * 8, 8, 8);
+                if (options[7] == 0) {
+                    ctx.fillStyle = choosecolors[1];
+                    ctx.fillRect(i * 8 + 1, j * 8 + 1, 6, 6);
+                }
             } else {
                 if (border && options[1]) {
                     ctx.fillStyle = choosecolors[2];
@@ -102,11 +111,11 @@ function fillCanva(table, choosecolors, border, options) {
 
         }
     }
-    console.timeEnd("mojaPetla");
+    //console.timeEnd("mojaPetla");
 }
 
 function calcNextstep(table, conf, tryb) {
-    console.time("calc");
+    //console.time("calc");
     var newTable = getzeroshema();
     for (let i = 0; i < 200; i++) {
         for (let j = 0; j < 200; j++) {
@@ -115,7 +124,7 @@ function calcNextstep(table, conf, tryb) {
             } else {
                 nr = calcNeighbor25(table, i, j, tryb);
             }
-            if (table[i][j]) {
+            if (table[i][j] == 1) {
                 if (conf[1][nr]) {
                     newTable[i][j] = 1;
                 } else {
@@ -130,7 +139,16 @@ function calcNextstep(table, conf, tryb) {
             }
         }
     }
-    console.timeEnd("calc");
+
+    for (let i = 0; i < 200; i++) {
+        for (let j = 0; j < 200; j++) {
+            if (table[i][j] == 1 && newTable[i][j] == 0) {
+                newTable[i][j] = -1;
+            }
+        }
+    }
+
+    // console.timeEnd("calc");
     return newTable;
 }
 
@@ -140,16 +158,17 @@ function calcNeighbor(table, x, y) {
     for (i = -1; i <= 1; i++) {
         for (j = -1; j <= 1; j++) {
             if (x + i >= 0 && y + j >= 0 && x + i < 200 && y + j < 200) {
-                if (table[x + i][y + j]) {
+                if (table[x + i][y + j] > 0) {
                     res++;
                 }
             }
         }
     }
 
-    if (table[x][y]) {
+    if (table[x][y] > 0) {
         res--;
     }
+
     return res;
 }
 
@@ -172,7 +191,7 @@ function calcNeighbor25(table, x, y, tryb) {
     for (i = -2; i <= 2; i++) {
         for (j = -2; j <= 2; j++) {
             if (x + i >= 0 && y + j >= 0 && x + i < 200 && y + j < 200) {
-                if (modeTable[i + 2][j + 2] && table[x + i][y + j]) {
+                if (modeTable[i + 2][j + 2] && table[x + i][y + j] === 1) {
                     res++;
                 }
             }
@@ -278,6 +297,20 @@ function getModeGridTryb(tryb) {
         [1, 0, 0, 0, 1],
         [0, 0, 1, 1, 0],
         [0, 1, 0, 0, 0],
+    ];
+    table[15] = [
+        [0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0],
+        [0, 0, 0, 1, 0],
+        [0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+    ];
+    table[16] = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 1],
+        [0, 0, 0, 0, 0],
     ];
 
     if (table[tryb] == undefined) {

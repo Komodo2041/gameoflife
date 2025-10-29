@@ -87,7 +87,8 @@ var trybs = [
   { 'id': 12, 'img': 'galeria/tryb12.JPG', 'name': '{ref 3x3} - 8 - Narty', fields: 8 },
   { 'id': 13, 'img': 'galeria/tryb13.JPG', 'name': '{ref 3x3} - 8 - Romb in Squere', fields: 8 },
   { 'id': 14, 'img': 'galeria/tryb14.JPG', 'name': '{ref 3x3} - 8 - Wave', fields: 8 },
-
+  { 'id': 15, 'img': 'galeria/tryb15.JPG', 'name': ' Triangle ', fields: 3 },
+  { 'id': 16, 'img': 'galeria/tryb15.JPG', 'name': ' Triangle2 ', fields: 3 },
 ];
 
 var data = {
@@ -108,7 +109,7 @@ var data = {
   ctx: ctx,
   selectpattern: -1,
   selectpattern2: -1,
-  options: [0, 0, 0, 0, 0],
+  options: [0, 0, 0, 0, 0, 0, 0, 0],
   images: galerry,
   selectedImage: galerry[0].image,
   tryb: 1,
@@ -133,6 +134,9 @@ new Vue({
       }
       if (nr == 2 && data.showconfig[2] == 0) {
         data.tryb = 1;
+      }
+      if (nr == 3) {
+        this.pause();
       }
       this.$forceUpdate();
     },
@@ -210,6 +214,7 @@ new Vue({
       fillCanva(data.schema, data.choosecolors, data.addborderCheck, data.options);
     },
     changegen0: function (x, y) {
+
       x--;
       y--;
       if (data.gen0[x][y]) {
@@ -220,6 +225,7 @@ new Vue({
       this.$forceUpdate();
     },
     setGen0: function () {
+
       data.schema = getzeroshema();
       for (i = 0; i < 50; i++) {
         for (j = 0; j < 50; j++) {
@@ -230,6 +236,21 @@ new Vue({
       data.generation = 0;
       data.showconfig[3] = 0;
       fillCanva(data.schema, data.choosecolors, data.addborderCheck, data.options);
+      this.$forceUpdate();
+
+    },
+    setZeroGen0: function () {
+      for (i = 0; i < 50; i++) {
+        for (j = 0; j < 50; j++) {
+          data.gen0[i][j] = 0;
+        }
+      }
+      this.$forceUpdate();
+    },
+    unsetprevoption: function () {
+      if (data.options[7]) {
+        data.options[6] = 0;
+      }
       this.$forceUpdate();
     },
     start: function () {
