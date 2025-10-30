@@ -7,7 +7,7 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
-
+    <link rel="shortcut icon" href="favicon.ico">
 </head>
 
 <body>
@@ -16,12 +16,7 @@
         <h2>Gra w życie</h2>
         <p>Life, The game of life) - jeden z pierwszych i najbardziej znanych przykładów automatu
             komórkowego, wymyślony w roku 1970 przez brytyjskiego matematyka Johna Conwaya.</p>
-        <p>Gra została spopularyzowana przez Martina Gardnera na łamach Scientific American[1][2][3][4]. Od momentu
-            publikacji zawsze wzbudzała duże zainteresowanie z powodu zaskakującego sposobu, w jaki struktury potrafią
-            ewoluować[1]. To właśnie jej pojawienie się wzbudziło zainteresowanie automatami komórkowymi wśród
-            studentów, którzy traktowali ją jako rozrywkę oraz fizyków, którzy zwrócili uwagę na możliwości automatów w
-            zakresie symulatorów fizycznych. Dzisiaj matematyków, ekonomistów i naukowców z innych dziedzin interesuje
-            sposób, w jaki przy zastosowaniu tylko kilku prostych reguł powstają skomplikowane struktury[1].</p>
+
         <div>
             <button @click="changeconf(1)" class="btn btn-info">
                 <span v-show="showconfig[1]==1">Ukryj Galerię</span>
@@ -104,20 +99,24 @@
             <label>Pokazywanie komórek które dopiero umarły (Ramka z kolorem pomocnicznym): </label>
             <input type="checkbox" v-model="options[6]" v-bind:disabled="options[7] == true" />
             <br />
-            <label>Pokazywanie komórek które dopiero umarły (Cała komórkam ma kolor pomocniczy): </label>
+            <label>Pokazywanie komórek które dopiero umarły (Cała komórka ma kolor pomocniczy): </label>
             <input type="checkbox" @change="unsetprevoption()" v-model="options[7]" /><br />
+
+            <label>Nieskończona plansza (dół graniczy z góra, prawa z lewą)</label>
+            <input type="checkbox" v-model="options[8]" /><br />
 
         </div>
         <div class="mt10 w100 addb" v-show="tryb == 1">
             <p>Siatka 3x3 - sąsiedztwo Moore'a (Każda komórka ma ośmiu „sąsiadów”)</p>
+            <p>Reguła - {{ showregula() }}</p>
             <h4>Tworzenie nowych komórek (Liczba sąsiadów)</h4>
             <label v-for="(c, index) in conf9[0] " :key="index"> {{index}} :
-                <input type="checkbox" class="form cix" value="1" v-model="conf9[0][index]" />&nbsp;
+                <input type="checkbox" class="form cix" value="1" v-model="conf9[0][index]" @change="refresh()" />&nbsp;
             </label>
 
             <h4>Pozostaje przy życiu (Liczba sąsiadów)</h4>
             <label v-for="(c, index) in conf9[1] " :key="index">{{index}} :
-                <input type="checkbox" class="form cix" value="1" v-model="conf9[1][index]" />&nbsp;
+                <input type="checkbox" class="form cix" value="1" v-model="conf9[1][index]" @change="refresh()" />&nbsp;
             </label>
 
             <h4>Ustaw jedną z najpopularniejszych reguł</h4>

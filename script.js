@@ -88,7 +88,7 @@ var trybs = [
   { 'id': 13, 'img': 'galeria/tryb13.JPG', 'name': '{ref 3x3} - 8 - Romb in Squere', fields: 8 },
   { 'id': 14, 'img': 'galeria/tryb14.JPG', 'name': '{ref 3x3} - 8 - Wave', fields: 8 },
   { 'id': 15, 'img': 'galeria/tryb15.JPG', 'name': ' Triangle ', fields: 3 },
-  { 'id': 16, 'img': 'galeria/tryb15.JPG', 'name': ' Triangle2 ', fields: 3 },
+  //  { 'id': 16, 'img': 'galeria/tryb15.JPG', 'name': ' Triangle2 ', fields: 3 },
 ];
 
 var data = {
@@ -109,7 +109,7 @@ var data = {
   ctx: ctx,
   selectpattern: -1,
   selectpattern2: -1,
-  options: [0, 0, 0, 0, 0, 0, 0, 0],
+  options: [0, 0, 0, 0, 0, 0, 0, 0, 0],
   images: galerry,
   selectedImage: galerry[0].image,
   tryb: 1,
@@ -207,9 +207,9 @@ new Vue({
     oneStep: function () {
       data.generation++;
       if (data.tryb == 1) {
-        data.schema = calcNextstep(data.schema, data.conf9, data.tryb);
+        data.schema = calcNextstep(data.schema, data.conf9, data.tryb, data.options[8]);
       } else {
-        data.schema = calcNextstep(data.schema, data.conf16, data.tryb);
+        data.schema = calcNextstep(data.schema, data.conf16, data.tryb, data.options[8]);
       }
       fillCanva(data.schema, data.choosecolors, data.addborderCheck, data.options);
     },
@@ -253,11 +253,13 @@ new Vue({
       }
       this.$forceUpdate();
     },
+
     start: function () {
       this.state = STATES.STARTED;
       this._tick();
       this.step = 0;
       this.interval = setInterval(this._tick, 200);
+
     },
     pause: function () {
       this.state = STATES.PAUSED;
@@ -271,15 +273,30 @@ new Vue({
         for (let i = 0; i < data.numbeOfGenerations; i++) {
           data.generation++;
           if (data.tryb == 1) {
-            data.schema = calcNextstep(data.schema, data.conf9, data.tryb);
+            data.schema = calcNextstep(data.schema, data.conf9, data.tryb, data.options[8]);
           } else {
-            data.schema = calcNextstep(data.schema, data.conf16, data.tryb);
+            data.schema = calcNextstep(data.schema, data.conf16, data.tryb, data.options[8]);
           }
 
         }
         fillCanva(data.schema, data.choosecolors, data.addborderCheck, data.options);
       }
     },
+    showregula() {
+      res = '';
+      for (j = 0; j < 9; j++) {
+        if (data.conf9[1][j]) {
+          res += j;
+        }
+      }
+      res += '/';
+      for (j = 0; j < 9; j++) {
+        if (data.conf9[0][j]) {
+          res += j;
+        }
+      }
+      return res;
+    }
+  },
 
-  }
 });

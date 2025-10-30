@@ -114,15 +114,15 @@ function fillCanva(table, choosecolors, border, options) {
     //console.timeEnd("mojaPetla");
 }
 
-function calcNextstep(table, conf, tryb) {
+function calcNextstep(table, conf, tryb, infinity = 0) {
     //console.time("calc");
     var newTable = getzeroshema();
     for (let i = 0; i < 200; i++) {
         for (let j = 0; j < 200; j++) {
             if (tryb == 1) {
-                nr = calcNeighbor(table, i, j);
+                nr = calcNeighbor(table, i, j, infinity);
             } else {
-                nr = calcNeighbor25(table, i, j, tryb);
+                nr = calcNeighbor25(table, i, j, tryb, infinity);
             }
             if (table[i][j] == 1) {
                 if (conf[1][nr]) {
@@ -152,14 +152,23 @@ function calcNextstep(table, conf, tryb) {
     return newTable;
 }
 
-function calcNeighbor(table, x, y) {
+function calcNeighbor(table, x, y, infinity = 0) {
     let res = 0;
 
     for (i = -1; i <= 1; i++) {
         for (j = -1; j <= 1; j++) {
-            if (x + i >= 0 && y + j >= 0 && x + i < 200 && y + j < 200) {
-                if (table[x + i][y + j] > 0) {
+            if (infinity) {
+                if (table[invinity(x + i)][invinity(y + j)] == undefined) {
+                    console.log(invinity(x + i)); console.log(invinity(y + j));
+                }
+                else if (table[invinity(x + i)][invinity(y + j)] > 0) {
                     res++;
+                }
+            } else {
+                if (x + i >= 0 && y + j >= 0 && x + i < 200 && y + j < 200) {
+                    if (table[x + i][y + j] > 0) {
+                        res++;
+                    }
                 }
             }
         }
@@ -183,16 +192,22 @@ function getPattern(id, list) {
     return res;
 }
 
-function calcNeighbor25(table, x, y, tryb) {
+function calcNeighbor25(table, x, y, tryb, infinity = 0) {
 
     var modeTable = getModeGridTryb(tryb);
     let res = 0;
 
     for (i = -2; i <= 2; i++) {
         for (j = -2; j <= 2; j++) {
-            if (x + i >= 0 && y + j >= 0 && x + i < 200 && y + j < 200) {
-                if (modeTable[i + 2][j + 2] && table[x + i][y + j] === 1) {
+            if (infinity) {
+                if (modeTable[i + 2][j + 2] && table[invinity(x + i)][invinity(y + j)] === 1) {
                     res++;
+                }
+            } else {
+                if (x + i >= 0 && y + j >= 0 && x + i < 200 && y + j < 200) {
+                    if (modeTable[i + 2][j + 2] && table[x + i][y + j] === 1) {
+                        res++;
+                    }
                 }
             }
         }
@@ -321,6 +336,19 @@ function getModeGridTryb(tryb) {
 
 }
 
+function invinity(nr) {
+
+    if (nr >= 200) {
+        nr -= 200;
+    }
+    if (nr < 0) {
+
+        nr += 200;
+    }
+
+    return nr;
+
+}
 
 
 
