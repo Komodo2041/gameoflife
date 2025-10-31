@@ -22,11 +22,10 @@
                 <span v-show="showconfig[1]==1">Ukryj Galerię</span>
                 <span v-show="showconfig[1]==0">Pokaż Galerię</span>
             </button>
-            <a href="/gamelife/gallery.html" target="_blank" class="btn btn-warning">Zobacz Galerię dla
-                różnych
-                wariantów
-                sąsiedztwa 8
-                komórek</a> <br />
+            <a href="/gamelife/gallery.html" v-show="showconfig[1]==1" target="_blank" class="btn btn-warning">Zobacz
+                Galerię dla
+                różnych wariantów sąsiedztwa 8 komórek
+            </a> <br />
         </div>
         <div class="mt10 w100" v-show="showconfig[1]">
             <p>Mini galeria prezentująca efekty symulacji</p>

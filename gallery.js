@@ -225,7 +225,7 @@ var data = {
     'gallery': gallery,
     'gallery_lab': gallery_lab,
     'gallery_wolf': gallery_wolf,
-    'conf': 1
+    'conf': 2
 };
 
 new Vue({
