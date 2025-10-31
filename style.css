@@ -85,3 +85,32 @@
         .bl {
             background: #a8a8a8;
         }
+
+        .head img {
+            width: 100%;
+        }
+
+        .big-gallery,
+        .small-gallery {
+            margin: 10px 0px;
+        }
+
+        .big-gallery img {
+            width: 100%;
+        }
+
+        .showgallery {
+            display: block;
+        }
+
+        .noshowgallery {
+            display: none;
+        }
+
+        .small-gallery img {
+            cursor: pointer;
+            margin-right: 8px;
+            border: solid 1px #1c1c1c;
+            width: 300px;
+            height: 300px;
+        }

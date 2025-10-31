@@ -21,7 +21,12 @@
             <button @click="changeconf(1)" class="btn btn-info">
                 <span v-show="showconfig[1]==1">Ukryj Galerię</span>
                 <span v-show="showconfig[1]==0">Pokaż Galerię</span>
-            </button><br />
+            </button>
+            <a href="/gamelife/gallery.html" target="_blank" class="btn btn-warning">Zobacz Galerię dla
+                różnych
+                wariantów
+                sąsiedztwa 8
+                komórek</a> <br />
         </div>
         <div class="mt10 w100" v-show="showconfig[1]">
             <p>Mini galeria prezentująca efekty symulacji</p>
@@ -31,6 +36,7 @@
             <div class="imagebox">
                 <img v-for="(img, index) in  images" :src="img.thumb" alt="foto" @click="changeFoto(index)" />
             </div>
+
         </div>
         <div class="mt10 w100" v-show="showconfig[1]==0"></div>
 
@@ -188,6 +194,9 @@
             <button @click="setZeroGen0" v-show="showconfig[3] == 1" class="btn btn-info">
                 Zeruj komórki
             </button>
+
+            <button @click="pobierzJpg" class="btn btn-info" v-show="canster">Pobierz jako JPG</button>
+
         </div>
         <p v-show="canster"> Generacja: {{generation}} <span v-show="state=='paused'"><b> {{state}}</b> </span></p>
 

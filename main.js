@@ -320,13 +320,6 @@ function getModeGridTryb(tryb) {
         [0, 1, 0, 0, 0],
         [0, 0, 0, 0, 0],
     ];
-    table[16] = [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 1, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 1],
-        [0, 0, 0, 0, 0],
-    ];
 
     if (table[tryb] == undefined) {
         return table[2];
@@ -342,12 +335,31 @@ function invinity(nr) {
         nr -= 200;
     }
     if (nr < 0) {
-
         nr += 200;
     }
-
     return nr;
+}
 
+function pobierzJpg() {
+    var canvas = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+
+    const link = document.createElement('a');
+    link.download = getRandomString() + '.jpg';
+    link.href = canvas.toDataURL('image/jpeg');
+
+    link.click();
+
+}
+
+function getRandomString(x = 32) {
+    let ciag = "";
+    const znaki = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (let i = 0; i < x; i++) {
+        const losowyIndeks = Math.floor(Math.random() * znaki.length);
+        ciag += znaki.charAt(losowyIndeks);
+    }
+    return ciag;
 }
 
 

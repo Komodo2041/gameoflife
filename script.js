@@ -88,7 +88,7 @@ var trybs = [
   { 'id': 13, 'img': 'galeria/tryb13.JPG', 'name': '{ref 3x3} - 8 - Romb in Squere', fields: 8 },
   { 'id': 14, 'img': 'galeria/tryb14.JPG', 'name': '{ref 3x3} - 8 - Wave', fields: 8 },
   { 'id': 15, 'img': 'galeria/tryb15.JPG', 'name': ' Triangle ', fields: 3 },
-  //  { 'id': 16, 'img': 'galeria/tryb15.JPG', 'name': ' Triangle2 ', fields: 3 },
+
 ];
 
 var data = {
@@ -296,6 +296,9 @@ new Vue({
         }
       }
       return res;
+    },
+    pobierzJpg: function () {
+      pobierzJpg();
     }
   },
 

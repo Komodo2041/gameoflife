@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Game of Life - Galeria</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="favicon.ico">
+</head>
+
+
+
+<body>
+
+    <div id="app" class="container">
+        <a href="/gamelife" target="_blank" class="btn btn-info">Strona z Symulatorem gra w życie</a> <br />
+        <h2>Gra w życie - Galeria róznych wariancji</h2>
+        <p>Dla reguł sąsiedztwa inna niż Moora początkowa generacja miała gęstość mniejszą niż 18/100</p>
+        <h4>Reguły</h4>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link  " v-bind:class="{ 'active':conf==1}" @click="changeConf(1)" href=" #">Gra w
+                    życie - 23/3</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" v-bind:class="{ 'active':conf==2}" @click="changeConf(2)" href="#">Labirynt -
+                    12345/3</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" v-bind:class="{ 'active':conf==3}" @click="changeConf(3)" href="#">Wolfram -
+                    018/018</a>
+            </li>
+
+        </ul>
+
+        <div class="mt10" v-show="conf==1">
+            <div v-for="(gall, nrgal) in gallery">
+                <div>
+                    Tryb: <img :src="gall.img" /> {{gall.name}}
+                </div>
+                <div class="big-gallery"
+                    v-bind:class="{'showgallery' : gall.showbiggallery == 1, 'noshowgallery' : gall.showbiggallery == 0}">
+                    <img :src="gall.selimg" />
+                </div>
+                <div class="small-gallery">
+
+                    <img v-for="(img, index) in  gall.imgs" :src="img.thumb" alt="foto"
+                        @click="changeFoto(1, nrgal, index)" />
+                    <button @click="hidebiggImg(1, nrgal)" class="btn btn-info" v-show="gall.showbiggallery">Ukryj duże
+                        zdjęcie</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt10" v-show="conf==2">
+            <div v-for="(gall, nrgal) in gallery_lab">
+                <div>
+                    Tryb: <img :src="gall.img" /> {{gall.name}}
+                </div>
+                <div class="big-gallery"
+                    v-bind:class="{'showgallery' : gall.showbiggallery == 1, 'noshowgallery' : gall.showbiggallery == 0}">
+                    <img :src="gall.selimg" />
+                </div>
+                <div class="small-gallery">
+
+                    <img v-for="(img, index) in  gall.imgs" :src="img.thumb" alt="foto"
+                        @click="changeFoto(2, nrgal, index)" />
+                    <button @click="hidebiggImg(2, nrgal)" class="btn btn-info" v-show="gall.showbiggallery">Ukryj duże
+                        zdjęcie</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt10" v-show="conf==3">
+            <div v-for="(gall, nrgal) in gallery_wolf">
+                <div>
+                    Tryb: <img :src="gall.img" /> {{gall.name}}
+                </div>
+                <div class="big-gallery"
+                    v-bind:class="{'showgallery' : gall.showbiggallery == 1, 'noshowgallery' : gall.showbiggallery == 0}">
+                    <img :src="gall.selimg" />
+                </div>
+                <div class="small-gallery">
+
+                    <img v-for="(img, index) in  gall.imgs" :src="img.thumb" alt="foto"
+                        @click="changeFoto(3, nrgal, index)" />
+                    <button @click="hidebiggImg(3, nrgal)" class="btn btn-info" v-show="gall.showbiggallery">Ukryj duże
+                        zdjęcie</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
+
+    <script src="gallery.js"></script>
+
+
+</body>
+
+</html>
