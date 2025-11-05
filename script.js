@@ -87,9 +87,14 @@ var trybs = [
   { 'id': 12, 'img': 'galeria/tryb12.JPG', 'name': '{ref 3x3} - 8 - Narty', fields: 8 },
   { 'id': 13, 'img': 'galeria/tryb13.JPG', 'name': '{ref 3x3} - 8 - Romb in Squere', fields: 8 },
   { 'id': 14, 'img': 'galeria/tryb14.JPG', 'name': '{ref 3x3} - 8 - Wave', fields: 8 },
-  { 'id': 15, 'img': 'galeria/tryb15.JPG', 'name': ' Triangle ', fields: 3 },
-
+  { 'id': 15, 'img': 'galeria/tryb15.JPG', 'name': 'Triangle', fields: 3 },
+  { 'id': 16, 'img': 'galeria/tryb16.JPG', 'name': 'Nuemann', fields: 4 },
+  { 'id': 17, 'img': 'galeria/tryb17.JPG', 'name': 'Pentagon', fields: 5 },
+  { 'id': 18, 'img': 'galeria/tryb18.JPG', 'name': 'Hex', fields: 6 },
+  { 'id': 19, 'img': 'galeria/tryb19.JPG', 'name': 'Heptagon', fields: 7 },
+  { 'id': 20, 'img': 'galeria/tryb20.JPG', 'name': 'Decagon', fields: 9 }
 ];
+
 
 var data = {
   canster: 0,
