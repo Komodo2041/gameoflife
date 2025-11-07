@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^gamelife/gallery\.html$ /gamelife/gallery [R=301,L]
