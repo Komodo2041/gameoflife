@@ -1,2 +1,6 @@
+ 
 RewriteEngine On
-RewriteRule ^gamelife/gallery\.html$ /gamelife/gallery [R=301,L]
+
+# Ukryte przekierowanie: /gallery → /gallery.html
+RewriteCond %{REQUEST_URI} ^/gamelife/gallery$ [NC]
+RewriteRule ^gallery$ gallery.html [L]
