@@ -1,6 +1,13 @@
  
 # Game of Life – Conway's Cellular Automaton (JavaScript)
 
+<p align="center">
+  <img src="https://img.shields.io/badge/JavaScript-Vanilla-yellow" alt="Vanilla JS">
+  <img src="https://img.shields.io/badge/Vue.js-3-green" alt="Vue 3">
+  <img src="https://img.shields.io/badge/Live-Demo-brightgreen" alt="Live">
+  <img src="https://img.shields.io/badge/Algorithms-Conway-blue" alt="Conway">
+</p>
+
 **Live demo**: http://maniontg.webd.pro/gamelife/ 
 **Gallery** http://maniontg.webd.pro/gamelife/gallery
 **Pure JS | Canvas | Algorithms**
@@ -34,6 +41,10 @@ https://youtube.com/shorts/cdRTUYHPvWo
 https://youtube.com/shorts/s2yLefx7w44
 
 https://youtube.com/shorts/wjnuVc0XKCg
+
+## Demo w akcji
+[![Game of Life Demo](https://img.youtube.com/vi/GoWlnoKDErs/0.jpg)](https://www.youtube.com/watch?v=GoWlnoKDErs)
+
 
 **Szukasz JS deva z algorytmami?**  
 **#javascript #js #hiring #portfolio #gameoflife #canvas**
