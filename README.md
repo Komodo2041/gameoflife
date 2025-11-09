@@ -1,15 +1,8 @@
-# gameoflife
  
-<p align="center">
-  <a href="https://komodo2041.github.io/gameoflife">
-    <img src="https://raw.githubusercontent.com/Komodo2041/gameoflife/main/screenshot.png" width="600" alt="Game of Life"/>
-  </a>
-</p>
-
 # Game of Life – Conway's Cellular Automaton (JavaScript)
 
 **Live demo**: http://maniontg.webd.pro/gamelife/ 
-** Gallery ** http://maniontg.webd.pro/gamelife/gallery
+**Gallery** http://maniontg.webd.pro/gamelife/gallery
 **Pure JS | Canvas | Algorithms**
  
 ## Funkcje
@@ -17,6 +10,7 @@
 - Interaktywna plansza (klikaj, by dodać komórki)
 - Kontrola prędkości (pause/play)
 - Losowe generowanie
+- Wiele sprawdzanych sąsiedztw
 
 ## Tech stack
 - Vanilla JavaScript
@@ -36,7 +30,9 @@ https://www.youtube.com/shorts/cdRTUYHPvWo
 
 inne video pokazujące możliwośći automatu:
 https://youtube.com/shorts/cdRTUYHPvWo
+
 https://youtube.com/shorts/s2yLefx7w44
+
 https://youtube.com/shorts/wjnuVc0XKCg
 
 **Szukasz JS deva z algorytmami?**  
