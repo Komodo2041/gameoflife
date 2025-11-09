@@ -45,6 +45,35 @@ https://youtube.com/shorts/wjnuVc0XKCg
 ## Demo w akcji
 [![Game of Life Demo](https://img.youtube.com/vi/GoWlnoKDErs/0.jpg)](https://www.youtube.com/watch?v=GoWlnoKDErs)
 
+## Kluczowy algorytm – liczenie sąsiadów
+
+```js
+function calcNeighbor(table, x, y, infinity = 0) {
+    let res = 0;
+
+    for (i = -1; i <= 1; i++) {
+        for (j = -1; j <= 1; j++) {
+            if (infinity) {
+                if (table[invinity(x + i)][invinity(y + j)] > 0) {
+                    res++;
+                }
+            } else {
+                if (x + i >= 0 && y + j >= 0 && x + i < 200 && y + j < 200) {
+                    if (table[x + i][y + j] > 0) {
+                        res++;
+                    }
+                }
+            }
+        }
+    }
+
+    if (table[x][y] > 0) {
+        res--;
+    }
+
+    return res;
+}
+
 
 **Szukasz JS deva z algorytmami?**  
 **#javascript #js #hiring #portfolio #gameoflife #canvas**

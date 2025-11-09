@@ -158,10 +158,7 @@ function calcNeighbor(table, x, y, infinity = 0) {
     for (i = -1; i <= 1; i++) {
         for (j = -1; j <= 1; j++) {
             if (infinity) {
-                if (table[invinity(x + i)][invinity(y + j)] == undefined) {
-                    console.log(invinity(x + i)); console.log(invinity(y + j));
-                }
-                else if (table[invinity(x + i)][invinity(y + j)] > 0) {
+                if (table[invinity(x + i)][invinity(y + j)] > 0) {
                     res++;
                 }
             } else {
