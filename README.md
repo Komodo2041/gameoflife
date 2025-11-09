@@ -73,6 +73,7 @@ function calcNeighbor(table, x, y, infinity = 0) {
 
     return res;
 }
+```
 
 
 **Szukasz JS deva z algorytmami?**  
