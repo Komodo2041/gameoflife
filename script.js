@@ -69,7 +69,8 @@ var galerry = [
   { 'thumb': 'galeria/thumb4.jpg', 'image': 'galeria/four.JPG' },
   { 'thumb': 'galeria/thumb5.jpg', 'image': 'galeria/five.JPG' },
   { 'thumb': 'galeria/thumb6.jpg', 'image': 'galeria/six.JPG' },
-  { 'thumb': 'galeria/thumb7.jpg', 'image': 'galeria/seven.JPG' }
+  { 'thumb': 'galeria/thumb7.jpg', 'image': 'galeria/seven.JPG' },
+  { 'thumb': 'galeria/thumb8.jpg', 'image': 'galeria/eight.JPG' }
 ];
 
 var trybs = [

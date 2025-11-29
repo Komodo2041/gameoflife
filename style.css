@@ -38,8 +38,8 @@
 
         .imagebox img {
             cursor: pointer;
-            margin-right: 5px;
-            margin-top: 5px;
+            margin-right: 1px;
+            margin-top: 1px;
         }
 
         .imagebox img:hover {
