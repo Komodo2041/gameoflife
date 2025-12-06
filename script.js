@@ -307,5 +307,9 @@ new Vue({
       pobierzJpg();
     }
   },
+  created() {
 
+    setTimeout(function () { document.getElementById("drawCanva").click(); }, 1000)
+
+  }
 });

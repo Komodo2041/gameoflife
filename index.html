@@ -173,7 +173,7 @@
 
         <div class="mt10 w100">
             <h2>Symulacja</h2>
-            <button @click="drawCanva" class="btn btn-success">Twórz nowe pokolenie</button>
+            <button id="drawCanva" @click="drawCanva" class="btn btn-success">Twórz nowe pokolenie</button>
             <button @click="oneStep" class="btn btn-info" v-show="canster">Jeden Krok</button>
 
             <button :disabled="state==='started'" title="start" @click="start()" v-show="canster">
